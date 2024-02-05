@@ -1,0 +1,77 @@
+import * as React from 'react';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
+import Toolbar from '@mui/material/Toolbar';
+import {Alert} from "@mui/material";
+import LogoutIcon from '@mui/icons-material/Logout';
+import ContactPageIcon from '@mui/icons-material/ContactPage';
+import {useNavigate} from "react-router-dom";
+import { ChangeContextDialog } from "../auth/context/ChangeContextDialog.tsx";
+import useAuthStore from "../auth/store.ts";
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import SettingsIcon from '@mui/icons-material/Settings';
+import useChangeContext from "../../hooks/useChangeContext.ts";
+import RefreshIcon from '@mui/icons-material/Refresh';
+import {useSetAlerts} from "../alert/store.ts";
+import {ToolTippedIconButton} from "./ToolTippedIconButton.tsx";
+import {CenteredStack} from "../ui/CenteredStack.tsx";
+import {NavbarItem} from "./NavbarItem.tsx";
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import {NavbarFooter} from "./NavbarFooter.tsx";
+import {UserContext} from "../../api/UserApiClient.ts";
+import {UserNavbarProfile} from "./UserNavbarProfile.tsx";
+
+export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
+    const [isContextOpen, setContextOpen] = React.useState(false);
+    const {setSuccessAlert} = useSetAlerts();
+    const logout = useAuthStore(store => store.logout);
+    const {mutate: changeContext} = useChangeContext();
+    const navigate = useNavigate();
+
+    return (
+        <div>
+            <ChangeContextDialog open={isContextOpen} currentUser={user}
+                                 handleClose={value => {
+                                     if (user?.loggedAs.id !== value) {
+                                         changeContext(value);
+                                     }
+                                     setContextOpen(false);
+                                 }}/>
+
+
+            {
+                user.role === 'ADMIN' &&
+                <Alert severity="warning">
+                    Používáte administrátorský účet.
+                </Alert>
+            }
+
+            <Toolbar/>
+            <UserNavbarProfile user={user}/>
+
+            <CenteredStack>
+                <ToolTippedIconButton tooltipTitle={"Načíst účet"} Icon={RefreshIcon}/>
+                <ToolTippedIconButton tooltipTitle={"Změnit kontext"} Icon={ContactPageIcon} onClick={() => {
+                    if (!isContextOpen) {
+                        setContextOpen(true);
+                    }
+                }}/>
+                <ToolTippedIconButton tooltipTitle={"Nastavení účtu"} Icon={SettingsIcon}
+                                      onClick={() => navigate('/settings')}/>
+                <ToolTippedIconButton tooltipTitle={"Odhlásit se"} Icon={LogoutIcon} onClick={() => {
+                    logout();
+                    setSuccessAlert('Byl jste odhlášen ze systému.');
+                    navigate("/auth/login");
+                }}/>
+            </CenteredStack>
+
+            <Divider/>
+            <List>
+                <NavbarItem Icon={DashboardIcon} path={"/dashboard"}>Přehled</NavbarItem>
+                <NavbarItem Icon={AssignmentIcon} path={"/dashboard"}>Úkoly</NavbarItem>
+            </List>
+
+            <NavbarFooter/>
+        </div>
+    );
+}
