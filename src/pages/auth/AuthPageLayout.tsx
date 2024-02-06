@@ -2,14 +2,13 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 
 import { Grid, Link, Paper } from "@mui/material";
-import { Navigate, Outlet, Link as RouteLink } from "react-router-dom";
-import useAuthStore from "../../components/auth/store";
+import {Outlet, Link as RouteLink, Navigate} from "react-router-dom";
 import {Logo} from "../../components/ui/Logo.tsx";
+import {isAuthorized} from "../../utils/AuthUtils.ts";
 
 const AuthPageLayout = () => {
-  const accessToken = useAuthStore((store) => store.accessToken);
 
-  if (accessToken) {
+  if (isAuthorized()) {
     return <Navigate to={"/"} />;
   }
 

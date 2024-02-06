@@ -7,7 +7,6 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import {useNavigate} from "react-router-dom";
 import { ChangeContextDialog } from "../auth/context/ChangeContextDialog.tsx";
-import useAuthStore from "../auth/store.ts";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 import useChangeContext from "../../hooks/useChangeContext.ts";
@@ -20,11 +19,11 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import {NavbarFooter} from "./NavbarFooter.tsx";
 import {UserContext} from "../../api/UserApiClient.ts";
 import {UserNavbarProfile} from "./UserNavbarProfile.tsx";
+import {logout} from "../../utils/AuthUtils.ts";
 
 export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
     const [isContextOpen, setContextOpen] = React.useState(false);
     const {setSuccessAlert} = useSetAlerts();
-    const logout = useAuthStore(store => store.logout);
     const {mutate: changeContext} = useChangeContext();
     const navigate = useNavigate();
 

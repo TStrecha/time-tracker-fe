@@ -1,15 +1,23 @@
-import {useQuery} from "@tanstack/react-query";
-import { userApiClient } from "../api/UserApiClient";
-import useAuthStore from "../components/auth/store.ts";
+import {getAccessToken} from "../utils/AuthUtils.ts";
+import {jwtDecode} from "jwt-decode";
+import {UserContext} from "../api/UserApiClient.ts";
+
+interface ContextWrapper {
+    exp: number;
+    iat: number;
+    sub: string;
+    user: UserContext;
+}
 
 const useLoggedUser = () => {
-    const accessToken = useAuthStore(store => store.accessToken);
+    const accessToken = getAccessToken();
 
-    return useQuery({
-        queryKey: ['loggedUser', accessToken],
-        queryFn: () => userApiClient.getLoggedUser(),
-        retry: false,
-    })
+    if(!accessToken) {
+        return null;
+    }
+
+    const token = jwtDecode<ContextWrapper>(accessToken);
+    return token.user;
 }
 
 export default useLoggedUser;
