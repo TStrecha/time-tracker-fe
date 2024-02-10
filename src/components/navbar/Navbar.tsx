@@ -10,16 +10,15 @@ import { ChangeContextDialog } from "../auth/context/ChangeContextDialog.tsx";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 import useChangeContext from "../../hooks/useChangeContext.ts";
-import RefreshIcon from '@mui/icons-material/Refresh';
 import {useSetAlerts} from "../alert/store.ts";
 import {ToolTippedIconButton} from "./ToolTippedIconButton.tsx";
 import {CenteredStack} from "../ui/CenteredStack.tsx";
 import {NavbarItem} from "./NavbarItem.tsx";
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import {NavbarFooter} from "./NavbarFooter.tsx";
-import {UserContext} from "../../api/UserApiClient.ts";
 import {UserNavbarProfile} from "./UserNavbarProfile.tsx";
 import {logout} from "../../utils/AuthUtils.ts";
+import {UserContext} from "../../entity/UserContext.ts";
 
 export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
     const [isContextOpen, setContextOpen] = React.useState(false);
@@ -29,7 +28,7 @@ export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
 
     return (
         <div>
-            <ChangeContextDialog open={isContextOpen} currentUser={user}
+            <ChangeContextDialog open={isContextOpen}
                                  handleClose={value => {
                                      if (user?.loggedAs.id !== value) {
                                          changeContext(value);
@@ -49,7 +48,6 @@ export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
             <UserNavbarProfile user={user}/>
 
             <CenteredStack>
-                <ToolTippedIconButton tooltipTitle={"Načíst účet"} Icon={RefreshIcon}/>
                 <ToolTippedIconButton tooltipTitle={"Změnit kontext"} Icon={ContactPageIcon} onClick={() => {
                     if (!isContextOpen) {
                         setContextOpen(true);

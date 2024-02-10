@@ -1,4 +1,4 @@
-import { AxiosInstance } from "axios";
+import {AxiosInstance, AxiosRequestConfig} from "axios";
 import { convertAxiosError } from "./error";
 import { useAxiosInstance } from "../hooks/useAxiosInstance";
 
@@ -18,7 +18,7 @@ class BaseApiClient<T> {
                 return data.data;
             }).catch(error => {
                 throw convertAxiosError(error);
-            });  
+            });
     }
     
     post = <B>(body: B): Promise<T> => {
@@ -34,10 +34,14 @@ class BaseApiClient<T> {
         
     // }
     
-    // getAll = (): ServerResponse<Page<T>> => {
-
-    // }
-    
+    getAll = (config: AxiosRequestConfig = {}): Promise<T[]> => {
+        return this.apiClient.get<T[]>(this.baseApiPath, config)
+            .then(data => {
+                return data.data;
+            }).catch(error => {
+                throw convertAxiosError(error);
+            });
+    }
 }
 
 export default BaseApiClient;

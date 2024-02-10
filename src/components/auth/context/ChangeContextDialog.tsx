@@ -1,26 +1,45 @@
-
 import Dialog from "@mui/material/Dialog";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import CloseIcon from "@mui/icons-material/Close";
 import ListItemText from "@mui/material/ListItemText";
-import {ContextUserDTO, UserContext} from "../../../api/UserApiClient.ts";
 import IconButton from "@mui/material/IconButton";
 import {formatTimestamp} from "../../../utils/DateTimeUtils.ts";
 import AccountAvatar from "../AccountAvatar.tsx";
+import useAvailableContexts from "../../../hooks/useAvailableContexts.ts";
+import {ContextUserDTO, UserContext} from "../../../entity/UserContext.ts";
+import {CircularProgress, DialogActions, DialogContent, DialogTitle, TextField, Typography} from "@mui/material";
+import {useState} from "react";
+import {CenteredStack} from "../../ui/CenteredStack.tsx";
+import {grey} from "@mui/material/colors";
+import {useCurrentUserRequired} from "./store.ts";
 
-interface Props {
+interface AccountListProps {
     currentUser: UserContext;
-    open: boolean;
+    searchQuery: string;
     handleClose: (value: number) => void;
 }
 
-const AccountList = ({currentUser, handleClose}: Props) => {
-    return currentUser.relationshipsReceiving.map((contextUser) => (
+const AccountList = ({ currentUser, handleClose, searchQuery }: AccountListProps) => {
+    const { data: contexts, isLoading } = useAvailableContexts();
+
+    if(!contexts || isLoading) {
+        return <CircularProgress color={'secondary'} />;
+    }
+
+    const filteredData = contexts.filter(context => context.fullName.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    if(filteredData.length === 0) {
+        return (
+            <Typography variant="subtitle1" color={grey[400]}>
+                <i>Nebyl nalezen žádný kontext.</i>
+            </Typography>
+        );
+    }
+
+    return filteredData.map((contextUser) => (
         <ListItem disableGutters key={contextUser.id} sx={{pt: 0}}>
             <ListItemButton onClick={() => handleClose(contextUser.id)}>
                 <ListItemAvatar>
@@ -34,14 +53,31 @@ const AccountList = ({currentUser, handleClose}: Props) => {
     ));
 };
 
-export const ChangeContextDialog = ({currentUser, open, handleClose}: Props) => {
+interface Props {
+    open: boolean;
+    handleClose: (value: number) => void;
+}
+
+export const ChangeContextDialog = ({open, handleClose}: Props) => {
+    const currentUser = useCurrentUserRequired();
+    const [searchQuery, setSearchQuery] = useState("");
+
+    if (!open && searchQuery) {
+        setSearchQuery("");
+    }
 
     const handleCloseDefault = () => {
         handleClose(currentUser.loggedAs.id);
     };
 
     return (
-        <Dialog onClose={handleCloseDefault} open={open}>
+        <Dialog onClose={handleCloseDefault} open={open}
+                PaperProps={{
+                    sx: {
+                        height: '75%',
+                        maxHeight: '75%',
+                    }
+                }}>
             <IconButton
                 aria-label="close"
                 onClick={handleCloseDefault}
@@ -53,15 +89,24 @@ export const ChangeContextDialog = ({currentUser, open, handleClose}: Props) => 
             >
                 <CloseIcon/>
             </IconButton>
-            <Box marginBottom={2}>
-                <Typography textAlign={"center"} variant={'h5'} marginTop={3} marginX={10}>
-                    Vyberte nový kontext
-                </Typography>
-            </Box>
 
-            <List>
-                <AccountList currentUser={currentUser} open={open} handleClose={handleClose}/>
-            </List>
+            <DialogTitle id="scroll-dialog-title" marginX={12}>
+                Vyberte nový kontext
+            </DialogTitle>
+
+            <DialogContent dividers sx={{ paddingX: 1 }}>
+                <List sx={{ height: '57vh' }}>
+                    <CenteredStack direction={'column'} fullHeight>
+                        <AccountList currentUser={currentUser} handleClose={handleClose} searchQuery={searchQuery}/>
+                    </CenteredStack>
+                </List>
+            </DialogContent>
+
+            <DialogActions>
+                <TextField id="outlined-search" label="Vyhledat podle jména" type="search" sx={{width: '100%'}}
+                           onChange={(event) => setSearchQuery(event.target.value)}
+                />
+            </DialogActions>
 
         </Dialog>
     )
@@ -70,6 +115,8 @@ export const ChangeContextDialog = ({currentUser, open, handleClose}: Props) => 
 function getRelationshipDescription(contextUser: ContextUserDTO, currentUser: UserContext) {
     if (contextUser.id === currentUser.id) {
         return "Vy";
+    } else if(contextUser.activeFrom === null) {
+        return "Administrátorský přístup"
     } else {
 
         const activeFromText = `Vztah aktivní od ${formatTimestamp(contextUser.activeFrom)}`;

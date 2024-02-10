@@ -2,8 +2,8 @@ import {CenteredStack} from "../ui/CenteredStack.tsx";
 import {Avatar, Link} from "@mui/material";
 import {green} from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
-import {UserContext} from "../../api/UserApiClient.ts";
 import useChangeContext from "../../hooks/useChangeContext.ts";
+import {UserContext} from "../../entity/UserContext.ts";
 
 export const UserNavbarProfile = ({ user }: { user: UserContext }) => {
 

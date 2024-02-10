@@ -1,36 +1,13 @@
-import BaseApiClient from "./ApiClient";
+import BaseApiClient from "./ApiClient.ts";
+import {ContextUserDTO} from "../entity/UserContext.ts";
 
-export type AccountTypes = "PERSON" | "COMPANY";
-
-export interface ContextUserDTO {
-    id: number;
-    email: string;
-    fullName: string;
-    accountType: AccountTypes;
-    activeFrom: number;
-    activeTo: number;
-    secureValues: boolean;
-}
-
-export interface UserContext {
-    id: number;
-    email: string;
-    fullName: string;
-    role: 'USER' | 'ADMIN';
-    loggedAs: ContextUserDTO;
-
-    relationshipsReceiving: ContextUserDTO[];
-
-    activePermissions: string[];
-}
-
-class UserApiClient extends BaseApiClient<UserContext> {
+class ContextApiClient extends BaseApiClient<ContextUserDTO> {
 
     constructor() {
-        super('/user');
+        super('/user/context');
     }
 
-    getLoggedUser = () => this.get();
+    getAvailableContexts = () => this.getAll();
 }
 
-export const userApiClient = new UserApiClient();
+export const contextApiClient = new ContextApiClient();
