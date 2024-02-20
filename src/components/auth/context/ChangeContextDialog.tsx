@@ -94,9 +94,9 @@ export const ChangeContextDialog = ({open, handleClose}: Props) => {
                 Vyberte nový kontext
             </DialogTitle>
 
-            <DialogContent dividers sx={{ paddingX: 1 }}>
+            <DialogContent dividers sx={{ paddingX: 1, paddingY: 0 }}>
                 <List sx={{ height: '57vh' }}>
-                    <CenteredStack direction={'column'} fullHeight>
+                    <CenteredStack direction={'column'}>
                         <AccountList currentUser={currentUser} handleClose={handleClose} searchQuery={searchQuery}/>
                     </CenteredStack>
                 </List>
