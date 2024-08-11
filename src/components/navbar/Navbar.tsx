@@ -62,7 +62,7 @@ export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
                 }}/>
             </CenteredStack>
 
-            <Divider/>
+            <Divider sx={{borderStyle:'dashed'}}/>
             <List>
                 <NavbarItem Icon={DashboardIcon} path={"/dashboard"}>Přehled</NavbarItem>
                 <NavbarItem Icon={AssignmentIcon} path={"/dashboard"}>Úkoly</NavbarItem>
