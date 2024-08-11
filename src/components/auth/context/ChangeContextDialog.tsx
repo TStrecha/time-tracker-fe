@@ -10,20 +10,12 @@ import {formatTimestamp} from "../../../utils/DateTimeUtils.ts";
 import AccountAvatar from "../AccountAvatar.tsx";
 import useAvailableContexts from "../../../hooks/useAvailableContexts.ts";
 import {ContextUserDTO, UserContext} from "../../../entity/UserContext.ts";
-import {
-    CircularProgress,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    InputAdornment,
-    TextField,
-    Typography
-} from "@mui/material";
+import {CircularProgress, DialogActions, DialogContent, DialogTitle, TextField, Typography} from "@mui/material";
 import {useState} from "react";
 import {CenteredStack} from "../../ui/CenteredStack.tsx";
 import {grey} from "@mui/material/colors";
 import {useCurrentUserRequired} from "./store.ts";
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+
 interface AccountListProps {
     currentUser: UserContext;
     searchQuery: string;
@@ -102,8 +94,8 @@ export const ChangeContextDialog = ({open, handleClose}: Props) => {
                 Vyberte nový kontext
             </DialogTitle>
 
-            <DialogContent dividers sx={{paddingX: 1, paddingY: 0}}>
-                <List sx={{height: '57vh'}}>
+            <DialogContent dividers sx={{ paddingX: 1, paddingY: 0 }}>
+                <List sx={{ height: '57vh' }}>
                     <CenteredStack direction={'column'}>
                         <AccountList currentUser={currentUser} handleClose={handleClose} searchQuery={searchQuery}/>
                     </CenteredStack>
@@ -113,13 +105,6 @@ export const ChangeContextDialog = ({open, handleClose}: Props) => {
             <DialogActions>
                 <TextField id="outlined-search" label="Vyhledat podle jména" type="search" sx={{width: '100%'}}
                            onChange={(event) => setSearchQuery(event.target.value)}
-                           InputProps={{
-                               startAdornment: (
-                                   <InputAdornment position="start">
-                                       <PersonSearchIcon/>
-                                   </InputAdornment>
-                               )
-                           }}
                 />
             </DialogActions>
 

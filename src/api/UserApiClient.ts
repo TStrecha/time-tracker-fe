@@ -4,7 +4,7 @@ import {ContextUserDTO} from "../entity/UserContext.ts";
 class ContextApiClient extends BaseApiClient<ContextUserDTO> {
 
     constructor() {
-        super('/relationship/context');
+        super('/user/context');
     }
 
     getAvailableContexts = () => this.getAll();

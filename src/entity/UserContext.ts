@@ -3,9 +3,6 @@ export type AccountTypes = "PERSON" | "COMPANY";
 export interface ContextUserDTO {
     id: number;
     email: string;
-    firstName: string;
-    lastName: string;
-    companyName: string;
     fullName: string;
     accountType: AccountTypes;
     activeFrom: number;
@@ -16,9 +13,6 @@ export interface ContextUserDTO {
 export interface UserContext {
     id: number;
     email: string;
-    firstName: string;
-    lastName: string;
-    companyName: string;
     fullName: string;
     role: 'USER' | 'ADMIN';
     loggedAs: ContextUserDTO;

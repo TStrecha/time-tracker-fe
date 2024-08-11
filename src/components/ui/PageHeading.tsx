@@ -1,6 +1,5 @@
 import Typography from "@mui/material/Typography";
-import {ReactNode} from "react";
 
-export const PageHeading = ({children: text}: { children: ReactNode }) => {
+export const PageHeading = ({children: text}: { children: string }) => {
     return <Typography variant={'h4'} marginBottom={2}>{text}</Typography>
 };

@@ -1,6 +1,6 @@
 import axios from "axios";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
-import {ACCESS_TOKEN_STORAGE_KEY, fetchNewToken, isAuthorized, logout, setAccessToken} from "../utils/AuthUtils.ts";
+import {ACCESS_TOKEN_STORAGE_KEY, fetchNewToken, logout, setAccessToken} from "../utils/AuthUtils.ts";
 
 const BASE_URL = import.meta.env.VITE_API_PATH;
 
@@ -11,10 +11,6 @@ export const axiosInstance = axios.create({
 setAccessToken(localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY));
 
 export const refreshAuth = async (failedRequest: any) => {
-    if(!isAuthorized()) {
-        return Promise.resolve();
-    }
-
     const newToken = await fetchNewToken();
 
     if (newToken) {
