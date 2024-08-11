@@ -2,7 +2,7 @@ import axios from "axios";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 import {ACCESS_TOKEN_STORAGE_KEY, fetchNewToken, logout, setAccessToken} from "../utils/AuthUtils.ts";
 
-export const BASE_URL = 'http://localhost:8000/api/v1';
+export const BASE_URL = 'https://devservertt.strechat.cz/api/v1';
 
 export const axiosInstance = axios.create({
     baseURL: BASE_URL,
