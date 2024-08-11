@@ -19,7 +19,7 @@ const darkTheme = createTheme({
         background: {
             default: grey[100]
         }
-    },
+    }
 });
 
 const queryClient = new QueryClient();

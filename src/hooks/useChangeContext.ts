@@ -11,7 +11,7 @@ const useChangeContext = () => {
   const reloadContext = useContextStore(store => store.reload);
 
   return useMutation({
-    mutationFn: (id: number) => axiosInstance.put("/user/context", null, { params: {id: id} }).then(data => {
+    mutationFn: (id: number) => axiosInstance.put("/auth/context", null, { params: {id: id} }).then(data => {
       return data.data;
     }),
     onSuccess: (response, _) => {
