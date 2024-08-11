@@ -17,7 +17,7 @@ export const NavbarItem = ({ children: title, Icon, path }: Props) => {
 
     return (
         <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate(path)} sx={{ paddingLeft: 4 }}>
+            <ListItemButton onClick={() => navigate(path)} sx={{ paddingLeft: 5.5 }}>
                 <ListItemIcon sx={{color: green[500], minWidth: "35px"}}>
                     <Icon/>
                 </ListItemIcon>
