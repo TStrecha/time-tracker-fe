@@ -8,6 +8,10 @@ import {Box, Stack} from "@mui/material";
 import {useCurrentUserRequired} from "../../components/auth/context/store.ts";
 import {grey} from "@mui/material/colors";
 
+const NAVBAR_BG_COLOR = "rgba(227,255,227,0.99)";
+const NAVBAR_WIDTH = 275;
+const FULL_HEIGHT = "100vh";
+
 export const AppLayout = () => {
     const currentUser = useCurrentUserRequired();
 
@@ -26,9 +30,9 @@ export const AppLayout = () => {
             <CssBaseline/>
             <Box
                 sx={{
-                    width: 270,
-                    height: "100vh",
-                    backgroundColor: "rgba(232,255,232,0.99)",
+                    width: NAVBAR_WIDTH,
+                    height: FULL_HEIGHT,
+                    backgroundColor: NAVBAR_BG_COLOR,
                     boxShadow: 3,
                     display: "flex",
                     flexDirection: "column",
@@ -40,18 +44,18 @@ export const AppLayout = () => {
             <Box
                 sx={{
                     width: 70,
-                    height: "100vh",
-                    backgroundColor: "rgba(232,255,232,0.99)",
+                    height: FULL_HEIGHT,
+                    backgroundColor: NAVBAR_BG_COLOR,
                 }}
             >
             </Box>
             <Box
                 sx={{
-                    height: "100vh",
+                    height: FULL_HEIGHT,
                     borderBottomLeftRadius: 40,
                     borderTopLeftRadius: 50,
-                    left: "265px",
-                    width: "calc(100% - 270px)",
+                    left: NAVBAR_WIDTH - 5,
+                    width: "calc(100% - "+ NAVBAR_WIDTH +"px)",
                     backgroundColor: grey[100],
                     position: "absolute",
                     paddingLeft: "40px",
