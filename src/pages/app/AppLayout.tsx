@@ -11,7 +11,6 @@ import {grey} from "@mui/material/colors";
 const NAVBAR_BG_COLOR = "rgba(227,255,227,0.99)";
 const NAVBAR_WIDTH = 275;
 const FULL_HEIGHT = "100vh";
-const BORDER_RADIUS = 40;
 
 export const AppLayout = () => {
     const currentUser = useCurrentUserRequired();
@@ -53,8 +52,8 @@ export const AppLayout = () => {
             <Box
                 sx={{
                     height: FULL_HEIGHT,
-                    borderBottomLeftRadius: BORDER_RADIUS,
-                    borderTopLeftRadius: BORDER_RADIUS,
+                    borderBottomLeftRadius: 40,
+                    borderTopLeftRadius: 50,
                     left: NAVBAR_WIDTH - 5,
                     width: "calc(100% - "+ NAVBAR_WIDTH +"px)",
                     backgroundColor: grey[100],
