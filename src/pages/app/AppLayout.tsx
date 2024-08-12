@@ -1,5 +1,5 @@
 import Navbar from "../../components/navbar/Navbar.tsx";
-import {Outlet} from "react-router-dom";
+import {Link as RouteLink, Outlet} from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import {Logo} from "../../components/ui/Logo.tsx";
 import Typography from "@mui/material/Typography";
@@ -31,7 +31,8 @@ export const AppLayout = () => {
             underline="hover"
             key="2"
             color="inherit"
-            href="/dashboard"
+            component={RouteLink}
+            to={"/dashboard"}
         >
             Přehled
         </Link>

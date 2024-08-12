@@ -27,7 +27,7 @@ const darkTheme = createTheme({
             main: green[500]
         },
         background: {
-            default: grey[700],
+            default: grey[800],
             paper: grey[900],
         }
     },
