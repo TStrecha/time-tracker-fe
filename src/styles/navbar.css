@@ -1,0 +1,15 @@
+#navbar .MuiListItemButton-root:hover {
+    background-color: rgba(100, 100, 100, 0.4);
+}
+
+#navbar .list-item-button-active {
+    background-color: #4caf50;
+}
+
+#navbar .list-item-icon-active {
+    color: white;
+}
+
+#navbar .list-item-button-active:hover {
+    background-color: #81c784;
+}

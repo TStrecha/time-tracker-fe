@@ -19,7 +19,7 @@ export const NavbarItem = ({ children: title, Icon, path }: Props) => {
     return (
         <ListItem disablePadding sx={{paddingX: 4}}>
             <ListItemButton onClick={() => navigate(path)} sx={{ paddingLeft: 2, borderRadius: 2 }} className={active ? 'list-item-button-active' : ''}>
-                <ListItemIcon sx={{color: active ? 'white' :'secondary.main', minWidth: "50px"}}>
+                <ListItemIcon sx={{color:'secondary.main', minWidth: "50px"}} className={active ? 'list-item-icon-active' : ''}>
                     <Icon fontSize={'medium'}/>
                 </ListItemIcon>
                 <ListItemText primary={title} />

@@ -22,6 +22,7 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import {grey} from "@mui/material/colors";
 import {NavbarFooter} from "./NavbarFooter.tsx";
+import "../../styles/navbar.css";
 
 export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
     const [isContextOpen, setContextOpen] = React.useState(false);
@@ -30,7 +31,7 @@ export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
     const navigate = useNavigate();
 
     return (
-        <div>
+        <div id={"navbar"}>
             <ChangeContextDialog open={isContextOpen}
                                  handleClose={value => {
                                      if (user?.loggedAs.id !== value) {
