@@ -15,12 +15,12 @@ export const NavbarItem = ({ children: title, Icon, path }: Props) => {
     const navigate = useNavigate();
 
     return (
-        <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate(path)} sx={{ paddingLeft: 5.5 }}>
-                <ListItemIcon sx={{color: 'secondary.main', minWidth: "35px"}}>
-                    <Icon/>
+        <ListItem disablePadding sx={{paddingX: 4}}>
+            <ListItemButton onClick={() => navigate(path)} sx={{ paddingLeft: 2, borderRadius: 2 }}>
+                <ListItemIcon sx={{color: 'secondary.main', minWidth: "50px"}}>
+                    <Icon fontSize={'medium'}/>
                 </ListItemIcon>
-                <ListItemText primary={title}/>
+                <ListItemText primary={title} />
 
             </ListItemButton>
         </ListItem>

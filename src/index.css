@@ -6,3 +6,7 @@ body {
 .MuiDrawer-paper {
     border-right-style: dashed !important;
 }
+
+.MuiListItemButton-root:hover {
+    background-color: rgba(100, 100, 100, 0.4) !important;
+}

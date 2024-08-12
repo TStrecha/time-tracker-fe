@@ -11,11 +11,11 @@ const lightTheme = createTheme({
     palette: {
         mode: "light",
         secondary: {
-            main: green[600]
+            main: green[500]
         },
         background: {
             paper: grey[100],
-            default: grey[200],
+            default: "#f0f2f5",
         }
     },
 });
@@ -24,7 +24,7 @@ const darkTheme = createTheme({
     palette: {
         mode: "dark",
         secondary: {
-            main: green[600]
+            main: green[500]
         },
         background: {
             default: grey[700],

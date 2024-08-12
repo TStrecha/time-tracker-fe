@@ -28,8 +28,8 @@ export const SettingsPage = () => {
 
     return (
         <>
-            <PageHeading>Nastavení účtu {userContext.loggedAs.fullName}</PageHeading>
-            <Stack direction={'row'}>
+            <PageHeading>Můj profil</PageHeading>
+            <Stack direction={'row'} paddingTop={5} spacing={7}>
                 <Paper elevation={1} sx={{padding: 1.5, width: '25%', marginRight: '25px' }}>
                     <Box>
                         <Typography variant={'h6'} marginBottom={2}><b>Detaily účtu</b> <DetailLock shown={disabled}/></Typography>
@@ -105,7 +105,7 @@ export const SettingsPage = () => {
                         </Button>
                     </Box>
                 </Paper>
-                <Paper elevation={1} sx={{width: '25%',  padding: 1.5 }}>
+                <Paper elevation={1} sx={{width: '35%',  padding: 1.5 }}>
                         <Stack justifyContent={'space-between'} direction={'row'}  marginBottom={2}>
                             <Typography variant={'h6'}><b>Nastavení účtu</b></Typography>
                             <Button
