@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import {useCurrentUserRequired} from "../../components/auth/context/store.ts";
 import LockIcon from '@mui/icons-material/Lock';
-import {red} from "@mui/material/colors";
+import {green, red} from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import {Add} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
@@ -117,7 +117,7 @@ export const SettingsPage = () => {
                             </Button>
                         </Stack>
                     <Box sx={{ maxHeight: '500px', overflow: 'auto', paddingX: 2 }} >
-                    <Card sx={{ minWidth: 275, borderLeft: 10, borderColor: 'secondary.main', marginBottom: 2 }}>
+                    <Card sx={{ minWidth: 275, borderLeft: 10, borderColor: green[600], marginBottom: 2 }}>
                         <CardActionArea onClick={() => navigate("/settings/1") }>
                             <CardContent>
                                 <Typography variant="h5" component="div">
