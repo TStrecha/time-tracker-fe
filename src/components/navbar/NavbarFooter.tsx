@@ -8,7 +8,7 @@ export const NavbarFooter = () => {
     return (
 
         <Box sx={{
-            position: 'absolute',
+            position: 'fixed',
             bottom: '1vh',
             paddingX: '5px',
         }}>

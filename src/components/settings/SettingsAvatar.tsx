@@ -1,11 +1,18 @@
-import {Avatar, Box, Stack, Typography} from "@mui/material";
+import {Avatar, Box, Input, Stack, Typography} from "@mui/material";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from '@mui/icons-material/Edit';
-import {orange} from "@mui/material/colors";
+import {green, orange, red} from "@mui/material/colors";
+import {useState} from "react";
+import {useCurrentUserRequired} from "../auth/context/store.ts";
+import DeleteIcon from '@mui/icons-material/Delete';
+import CheckIcon from '@mui/icons-material/Check';
 
 export const SettingsAvatar = () => {
+    const user = useCurrentUserRequired().loggedAs;
+    const [isEditing, setEditing] = useState(false);
+
     return (
         <Stack direction={'column'} marginBottom={4}>
             <Box sx={{pt: 0, marginLeft: 'auto', marginRight: 'auto'}}>
@@ -15,12 +22,29 @@ export const SettingsAvatar = () => {
                 </ListItemAvatar>
                 <Stack direction={'column'}>
                     <Stack direction={'row'}>
-                        <Typography>
-                            Tomáš Střecha {" "}
-                        </Typography>
-                        <IconButton aria-label="delete" size="small" sx={{marginTop: '-3px', marginLeft: '5px', color: orange[600]}}>
-                            <EditIcon fontSize="inherit" />
-                        </IconButton>
+                        {!isEditing &&
+                            <Typography>
+                                {user.fullName} {" "}
+                            </Typography>
+                        }
+                        {isEditing &&
+                            <Input defaultValue={user.fullName} sx={{maxHeight: '25px'}}/>
+                        }
+                        {!isEditing &&
+                            <IconButton aria-label="delete" size="small" sx={{marginTop: '-3px', marginLeft: '5px', color: orange[600]}} onClick={() => setEditing(true)}>
+                                <EditIcon fontSize="inherit" />
+                            </IconButton>
+                        }
+                        {isEditing &&
+                            <>
+                                <IconButton aria-label="delete" size="small" sx={{marginTop: '-3px', marginLeft: '5px', color: red[500]}} onClick={() => setEditing(false)}>
+                                    <DeleteIcon fontSize="inherit" />
+                                </IconButton>
+                                <IconButton aria-label="delete" size="small" sx={{marginTop: '-3px', marginLeft: '5px', color: green[500]}} onClick={() => setEditing(false)}>
+                                    <CheckIcon fontSize="inherit" />
+                                </IconButton>
+                            </>
+                        }
                     </Stack>
                     <Typography>
                         Osobní účet

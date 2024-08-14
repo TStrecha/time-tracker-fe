@@ -1,29 +1,16 @@
 import {PageHeading} from "../../components/ui/PageHeading.tsx";
-import {Box, Paper, Stack, Tab, Tabs, Tooltip} from "@mui/material";
-import LockIcon from '@mui/icons-material/Lock';
-import {red} from "@mui/material/colors";
-import React, {useState} from "react";
+import {Box, Grid, Paper, Stack, Tab, Tabs} from "@mui/material";
+import React from "react";
 import {SettingsAvatar} from "../../components/settings/SettingsAvatar.tsx";
 import {ChangePasswordSection} from "../../components/settings/ChangePasswordSection.tsx";
 import {TwoFactorAuthenticationSection} from "../../components/settings/TwoFactorAuthenticationSection.tsx";
 import {NotificationCentrum} from "../../components/settings/NotificationCentrum.tsx";
+import {useNavigate, useParams} from "react-router-dom";
 
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
     value: number;
-}
-
-export const DetailLock = ({ shown }: { shown: boolean }) => {
-    if (!shown) {
-        return null;
-    }
-
-    return (
-        <Tooltip title={'Detaily účtu může upravovat pouze vlastník účtu.'}>
-            <LockIcon sx={{color: red[800], fontSize: '20px', paddingBottom: '5px'}}/>
-        </Tooltip>
-    );
 }
 
 function CustomTabPanel(props: TabPanelProps) {
@@ -42,20 +29,21 @@ function CustomTabPanel(props: TabPanelProps) {
     );
 }
 
-function a11yProps(index: number) {
+function a11yProps(tabName: string) {
     return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
+        id: tabName,
     };
 }
 
+const INDEX_SECTION_NAME_MAPPING = ['details', 'billing', 'authorization'];
+
 export const SettingsPage = () => {
-    // const userContext = useCurrentUserRequired();
-    // const disabled = userContext.id != userContext.loggedAs.id
-    const [value, setValue] = useState(0);
+    const {section} = useParams();
+    const navigate = useNavigate();
+    const value = INDEX_SECTION_NAME_MAPPING.indexOf(section!);
 
     const handleChange = (_: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
+        navigate('/settings/' + INDEX_SECTION_NAME_MAPPING[newValue]);
     };
 
     return (
@@ -66,9 +54,9 @@ export const SettingsPage = () => {
                     <Box sx={{marginRight: 'auto', marginLeft: 'auto'}}>
                         <Box>
                             <Tabs value={value} onChange={handleChange} textColor={'secondary'} indicatorColor={'secondary'} sx={{border: 'none'}}>
-                                <Tab label="Detaily účtu" {...a11yProps(0)} />
-                                <Tab label="Fakturace" {...a11yProps(1)} />
-                                <Tab label="Autorizace" {...a11yProps(2)} />
+                                <Tab label="Detaily účtu" {...a11yProps("details")} />
+                                <Tab label="Fakturace" {...a11yProps("billing")} />
+                                <Tab label="Autorizace" {...a11yProps("authorization")} />
                             </Tabs>
                         </Box>
                     </Box>
@@ -77,19 +65,19 @@ export const SettingsPage = () => {
 
                     <CustomTabPanel value={value} index={0}>
                         <SettingsAvatar />
-                        <Stack direction={'row'} spacing={3}>
-                            <TwoFactorAuthenticationSection />
-                            <NotificationCentrum />
-                        </Stack>
-                        <Stack direction={'row'} marginTop={2}>
-                            <ChangePasswordSection />
-                        </Stack>
+                        <Grid container spacing={10}>
+                            <Grid item xs={6}>
+                                <TwoFactorAuthenticationSection />
+                                <ChangePasswordSection />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <NotificationCentrum />
+                            </Grid>
+                        </Grid>
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={1}>
-                        Nastaveni 2
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
-                        Nastaveni 3
                     </CustomTabPanel>
                 </Box>
             </Paper>

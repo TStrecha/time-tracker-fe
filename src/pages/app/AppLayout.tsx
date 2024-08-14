@@ -39,17 +39,17 @@ export const AppLayout = () => {
     ];
 
     return (
-        <Stack direction={'row'}>
+        <Stack direction={'row'} sx={{height: '100%'}}>
             <CssBaseline/>
             <Box
                 sx={{
                     width: '17%',
-                    height: "100vh",
                     background: "linear-gradient(195deg, rgb(66, 66, 74), rgb(25, 25, 25))",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "flex-start",
                     color: 'white',
+                    minHeight: '100vh'
                 }}
             >
                 <Navbar user={currentUser}/>
@@ -75,6 +75,7 @@ export const AppLayout = () => {
                 <Box>
                     <Outlet/>
                 </Box>
+                <Box mb={5}></Box>
             </Stack>
         </Stack>
     );
