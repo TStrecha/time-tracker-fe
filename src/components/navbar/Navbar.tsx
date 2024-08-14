@@ -72,7 +72,7 @@ export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
                 <NavbarItem Icon={AssignmentIcon} path={"/"}>Úkoly</NavbarItem>
                 <NavbarItem Icon={AssessmentIcon} path={"/"}>Reporty</NavbarItem>
                 <NavbarItem Icon={ReceiptIcon} path={"/"}>Fakturace</NavbarItem>
-                <NavbarItem Icon={SettingsIcon} path={"/settings"}>Nastavení</NavbarItem>
+                <NavbarItem Icon={SettingsIcon} path={"/settings/details"}>Nastavení</NavbarItem>
             </List>
 
             <NavbarFooter/>

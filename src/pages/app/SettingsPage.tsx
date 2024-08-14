@@ -36,21 +36,12 @@ function a11yProps(tabName: string) {
 }
 
 const INDEX_SECTION_NAME_MAPPING = ['details', 'billing', 'authorization'];
-const DEFAULT_PATH = '/settings/details';
+const DEFAULT_SECTION = INDEX_SECTION_NAME_MAPPING[0];
 
 export const SettingsPage = () => {
     const navigate = useNavigate();
     const {section} = useParams();
-
-    if(!section) {
-        navigate(DEFAULT_PATH);
-    }
-
-    const value = INDEX_SECTION_NAME_MAPPING.indexOf(section!);
-
-    if(value < 0) {
-        navigate(DEFAULT_PATH);
-    }
+    const value = INDEX_SECTION_NAME_MAPPING.indexOf(section ? section : DEFAULT_SECTION);
 
     const handleChange = (_: React.SyntheticEvent, newValue: number) => {
         navigate('/settings/' + INDEX_SECTION_NAME_MAPPING[newValue]);

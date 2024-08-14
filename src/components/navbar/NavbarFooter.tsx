@@ -6,10 +6,9 @@ import BugReportIcon from '@mui/icons-material/BugReport';
 import TerminalIcon from '@mui/icons-material/Terminal';
 
 export const NavbarFooter = () => {
-    const dev = import.meta.env.MODE_ENV == "development";
+    const dev = import.meta.env.MODE == "development";
 
     return (
-
         <Box sx={{
             position: 'fixed',
             bottom: '1vh',
