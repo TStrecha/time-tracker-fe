@@ -3,8 +3,11 @@ import {CenteredStack} from "../ui/CenteredStack.tsx";
 import {ToolTippedIconButton} from "./ToolTippedIconButton.tsx";
 import InfoIcon from '@mui/icons-material/Info';
 import BugReportIcon from '@mui/icons-material/BugReport';
+import TerminalIcon from '@mui/icons-material/Terminal';
 
 export const NavbarFooter = () => {
+    const dev = import.meta.env.MODE_ENV == "development";
+
     return (
 
         <Box sx={{
@@ -15,6 +18,7 @@ export const NavbarFooter = () => {
             <CenteredStack>
                 <ToolTippedIconButton tooltipTitle={"Verze systému: 0.0.1"} Icon={InfoIcon} />
                 <ToolTippedIconButton tooltipTitle={"Nahlásit chybu"} Icon={BugReportIcon} />
+                {dev && <ToolTippedIconButton tooltipTitle={"Jste na DEV prostředí!"} Icon={TerminalIcon} color={'error'} /> }
             </CenteredStack>
         </Box>
     );
