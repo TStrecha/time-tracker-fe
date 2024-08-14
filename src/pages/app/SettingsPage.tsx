@@ -7,8 +7,13 @@ import React, {useState} from "react";
 import {SettingsAvatar} from "../../components/settings/SettingsAvatar.tsx";
 import {ChangePasswordSection} from "../../components/settings/ChangePasswordSection.tsx";
 import {TwoFactorAuthenticationSection} from "../../components/settings/TwoFactorAuthenticationSection.tsx";
-import {TabPanelProps} from "@mui/lab";
 import {NotificationCentrum} from "../../components/settings/NotificationCentrum.tsx";
+
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+}
 
 export const DetailLock = ({ shown }: { shown: boolean }) => {
     if (!shown) {
