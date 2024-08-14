@@ -19,7 +19,7 @@ import {logout} from "../../utils/AuthUtils.ts";
 import {UserContext} from "../../entity/UserContext.ts";
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import ReceiptIcon from '@mui/icons-material/Receipt';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {grey} from "@mui/material/colors";
 import {NavbarFooter} from "./NavbarFooter.tsx";
 import "../../styles/navbar.css";
@@ -72,7 +72,7 @@ export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
                 <NavbarItem Icon={AssignmentIcon} path={"/"}>Úkoly</NavbarItem>
                 <NavbarItem Icon={AssessmentIcon} path={"/"}>Reporty</NavbarItem>
                 <NavbarItem Icon={ReceiptIcon} path={"/"}>Fakturace</NavbarItem>
-                <NavbarItem Icon={AccountBoxIcon} path={"/settings"}>Nastavení</NavbarItem>
+                <NavbarItem Icon={SettingsIcon} path={"/settings"}>Nastavení</NavbarItem>
             </List>
 
             <NavbarFooter/>

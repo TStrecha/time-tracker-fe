@@ -1,13 +1,14 @@
 import {PageHeading} from "../../components/ui/PageHeading.tsx";
-import {Box, Card, CardActionArea, CardContent, Paper, Stack, Tooltip} from "@mui/material";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
+import {Box, Paper, Stack, Tab, Tabs, Tooltip} from "@mui/material";
 import {useCurrentUserRequired} from "../../components/auth/context/store.ts";
 import LockIcon from '@mui/icons-material/Lock';
-import {green, red} from "@mui/material/colors";
-import Button from "@mui/material/Button";
-import {Add} from "@mui/icons-material";
-import {useNavigate} from "react-router-dom";
+import {red} from "@mui/material/colors";
+import React, {useState} from "react";
+import {SettingsAvatar} from "../../components/settings/SettingsAvatar.tsx";
+import {ChangePasswordSection} from "../../components/settings/ChangePasswordSection.tsx";
+import {TwoFactorAuthenticationSection} from "../../components/settings/TwoFactorAuthenticationSection.tsx";
+import {TabPanelProps} from "@mui/lab";
+import {NotificationCentrum} from "../../components/settings/NotificationCentrum.tsx";
 
 export const DetailLock = ({ shown }: { shown: boolean }) => {
     if (!shown) {
@@ -21,173 +22,73 @@ export const DetailLock = ({ shown }: { shown: boolean }) => {
     );
 }
 
+function CustomTabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        </div>
+    );
+}
+
+function a11yProps(index: number) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+
 export const SettingsPage = () => {
     const userContext = useCurrentUserRequired();
     const disabled = userContext.id != userContext.loggedAs.id
-    const navigate = useNavigate();
+    const [value, setValue] = useState(0);
+
+    const handleChange = (_: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
 
     return (
         <>
-            <PageHeading>Můj profil</PageHeading>
-            <Stack direction={'row'} paddingTop={5} spacing={7}>
-                <Paper elevation={1} sx={{padding: 1.5, width: '25%', marginRight: '25px' }}>
-                    <Box>
-                        <Typography variant={'h6'} marginBottom={2}><b>Detaily účtu</b> <DetailLock shown={disabled}/></Typography>
-                    {userContext.loggedAs.accountType == "PERSON" && (
-                        <>
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="firstName"
-                                label="Křestní jméno"
-                                type="text"
-                                id="firstName"
-                                value={userContext.loggedAs.firstName}
-                                disabled={disabled}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="lastName"
-                                label="Příjmení"
-                                type="lastName"
-                                id="lastName"
-                                value={userContext.loggedAs.lastName}
-                                disabled={disabled}
-                            />
-                        </>
-                    )}
-                    {userContext.loggedAs.accountType == "COMPANY" && (
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="companyName"
-                            label="Název firmy"
-                            type="text"
-                            id="companyName"
-                            value={userContext.loggedAs.companyName}
-                            disabled={disabled}
-                        />
-                    )}
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="email"
-                        label="Emailová adresa"
-                        type="email"
-                        id="email"
-                        value={userContext.loggedAs.email}
-                        disabled={disabled}
-                    />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Heslo pro ověření"
-                        type="password"
-                        id="password"
-                        disabled={disabled}
-                    />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                            color="success"
-                            disabled={disabled}
-                        >
-                            Uložit
-                        </Button>
+            <PageHeading>Nastavení</PageHeading>
+            <Paper sx={{padding: 5}}>
+                <Stack>
+                    <Box sx={{marginRight: 'auto', marginLeft: 'auto'}}>
+                        <Box>
+                            <Tabs value={value} onChange={handleChange} textColor={'secondary'} indicatorColor={'secondary'} sx={{border: 'none'}}>
+                                <Tab label="Detaily účtu" {...a11yProps(0)} />
+                                <Tab label="Fakturace" {...a11yProps(1)} />
+                                <Tab label="Autorizace" {...a11yProps(2)} />
+                            </Tabs>
+                        </Box>
                     </Box>
-                </Paper>
-                <Paper elevation={1} sx={{width: '35%',  padding: 1.5 }}>
-                        <Stack justifyContent={'space-between'} direction={'row'}  marginBottom={2}>
-                            <Typography variant={'h6'}><b>Nastavení účtu</b></Typography>
-                            <Button
-                                startIcon={<Add />}
-                                type="submit"
-                                color="success"
-                            >
-                                Přidat
-                            </Button>
-                        </Stack>
-                    <Box sx={{ maxHeight: '500px', overflow: 'auto', paddingX: 2 }} >
-                    <Card sx={{ minWidth: 275, borderLeft: 10, borderColor: green[600], marginBottom: 2 }}>
-                        <CardActionArea onClick={() => navigate("/settings/1") }>
-                            <CardContent>
-                                <Typography variant="h5" component="div">
-                                    Nazev aktivniho nastaveni
-                                </Typography>
-                                <Typography variant="body2">
-                                    Aktivní od 1.1.2024
-                                </Typography>
-                                <Typography variant="body2" color={"gray"}>
-                                    Poznamka uzivatele k tomuto nastaveni
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                    <Card sx={{ minWidth: 275, borderLeft: 10, borderColor: red[600], marginBottom: 2 }}>
-                        <CardContent>
-                            <Typography variant="h5" component="div">
-                                Nazev neaktivniho nastaveni
-                            </Typography>
-                            <Typography variant="body2">
-                                Aktivní od 1.1.2022 do 31.12.2023
-                            </Typography>
-                            <Typography variant="body2" color={"gray"}>
-                                Poznamka uzivatele
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                    <Card sx={{ minWidth: 275, borderLeft: 10, borderColor: red[600], marginBottom: 2 }}>
-                        <CardContent>
-                            <Typography variant="h5" component="div">
-                                Nazev neaktivniho nastaveni
-                            </Typography>
-                            <Typography variant="body2">
-                                Aktivní od 1.1.2022 do 31.12.2023
-                            </Typography>
-                            <Typography variant="body2" color={"gray"}>
-                                Poznamka uzivatele
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                    <Card sx={{ minWidth: 275, borderLeft: 10, borderColor: red[600], marginBottom: 2 }}>
-                        <CardContent>
-                            <Typography variant="h5" component="div">
-                                Nazev neaktivniho nastaveni
-                            </Typography>
-                            <Typography variant="body2">
-                                Aktivní od 1.1.2022 do 31.12.2023
-                            </Typography>
-                            <Typography variant="body2" color={"gray"}>
-                                Poznamka uzivatele
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                    <Card sx={{ minWidth: 275, borderLeft: 10, borderColor: red[600], marginBottom: 2 }}>
-                        <CardContent>
-                            <Typography variant="h5" component="div">
-                                Nazev neaktivniho nastaveni
-                            </Typography>
-                            <Typography variant="body2">
-                                Aktivní od 1.1.2022 do 31.12.2023
-                            </Typography>
-                            <Typography variant="body2" color={"gray"}>
-                                Poznamka uzivatele
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                    </Box>
-                </Paper>
+                </Stack>
+                <Box>
 
-            </Stack>
+                    <CustomTabPanel value={value} index={0}>
+                        <SettingsAvatar />
+                        <Stack direction={'row'} spacing={3}>
+                            <TwoFactorAuthenticationSection />
+                            <NotificationCentrum />
+                        </Stack>
+                        <Stack direction={'row'} marginTop={2}>
+                            <ChangePasswordSection />
+                        </Stack>
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={1}>
+                        Nastaveni 2
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={2}>
+                        Nastaveni 3
+                    </CustomTabPanel>
+                </Box>
+            </Paper>
         </>
     );
 };

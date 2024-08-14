@@ -1,0 +1,7 @@
+.dot-active {
+    filter: invert(39%) sepia(96%) saturate(1082%) hue-rotate(89deg) brightness(100%) contrast(107%);
+}
+
+.dot-inactive {
+    filter: invert(8%) sepia(96%) saturate(6874%) hue-rotate(357deg) brightness(98%) contrast(127%);
+}
