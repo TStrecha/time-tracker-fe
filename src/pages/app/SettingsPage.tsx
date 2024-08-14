@@ -52,7 +52,7 @@ function a11yProps(index: number) {
 
 export const SettingsPage = () => {
     const userContext = useCurrentUserRequired();
-    const disabled = userContext.id != userContext.loggedAs.id
+    // const disabled = userContext.id != userContext.loggedAs.id
     const [value, setValue] = useState(0);
 
     const handleChange = (_: React.SyntheticEvent, newValue: number) => {
