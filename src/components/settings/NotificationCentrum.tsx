@@ -1,6 +1,10 @@
 import {Box, Stack, Switch, Typography} from "@mui/material";
+import Button from "@mui/material/Button";
+import useAlertStore from "../alert/store.ts";
 
 export const NotificationCentrum = () => {
+    const {setSuccessAlert} = useAlertStore();
+
     return (
         <Box width={'100%'}>
             <Typography variant={'h5'} sx={{fontWeight: 'bold'}}>
@@ -33,7 +37,7 @@ export const NotificationCentrum = () => {
                         <Switch defaultChecked color={'secondary'}/>
                     </Box>
                 </Stack>
-                <Stack direction={'row'}>
+                <Stack direction={'row'} mb={5}>
                     <Box width={'75%'}>
                         <Typography variant={'h5'}>
                             Newsletter
@@ -46,6 +50,16 @@ export const NotificationCentrum = () => {
                         <Switch defaultChecked color={'secondary'}/>
                     </Box>
                 </Stack>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{color: 'white'}}
+                    color={'secondary'}
+                    onClick={() => setSuccessAlert("Notifikační preference uloženy.")}
+                >
+                    Uložit preference notifikací
+                </Button>
             </Stack>
         </Box>
     );
