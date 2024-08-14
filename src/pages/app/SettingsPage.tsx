@@ -1,6 +1,5 @@
 import {PageHeading} from "../../components/ui/PageHeading.tsx";
 import {Box, Paper, Stack, Tab, Tabs, Tooltip} from "@mui/material";
-import {useCurrentUserRequired} from "../../components/auth/context/store.ts";
 import LockIcon from '@mui/icons-material/Lock';
 import {red} from "@mui/material/colors";
 import React, {useState} from "react";
@@ -51,7 +50,7 @@ function a11yProps(index: number) {
 }
 
 export const SettingsPage = () => {
-    const userContext = useCurrentUserRequired();
+    // const userContext = useCurrentUserRequired();
     // const disabled = userContext.id != userContext.loggedAs.id
     const [value, setValue] = useState(0);
 
