@@ -4,7 +4,7 @@ import React from "react";
 import {SettingsAvatar} from "../../components/settings/SettingsAvatar.tsx";
 import {ChangePasswordSection} from "../../components/settings/ChangePasswordSection.tsx";
 import {TwoFactorAuthenticationSection} from "../../components/settings/TwoFactorAuthenticationSection.tsx";
-import {NotificationCentrum} from "../../components/settings/NotificationCentrum.tsx";
+import {NotificationCenter} from "../../components/settings/NotificationCenter.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 
 interface TabPanelProps {
@@ -72,7 +72,7 @@ export const SettingsPage = () => {
                                 <ChangePasswordSection />
                             </Grid>
                             <Grid item xs={6}>
-                                <NotificationCentrum />
+                                <NotificationCenter />
                             </Grid>
                         </Grid>
                     </CustomTabPanel>

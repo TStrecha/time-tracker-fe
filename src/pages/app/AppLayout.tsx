@@ -72,10 +72,9 @@ export const AppLayout = () => {
                     </Box>
                 </Stack>
 
-                <Box>
+                <Box mb={5}>
                     <Outlet/>
                 </Box>
-                <Box mb={5}></Box>
             </Stack>
         </Stack>
     );

@@ -8,6 +8,27 @@ import qrcode from '../../../public/qrcode-example.png';
 import {useSetAlerts} from "../alert/store.ts";
 import TextField from "@mui/material/TextField";
 
+interface CommonDialogProps {
+    open: boolean;
+    twoFaActive: boolean;
+    onClose: () => void;
+}
+
+type ConfirmationDialogProps = CommonDialogProps & {
+    onCancelButtonClick: () => void;
+    onContinueToActivationButtonClick: () => void;
+}
+
+type SetupDialogProps = CommonDialogProps & {
+    onContinueToCheckButtonClick: () => void;
+}
+
+type CheckDialogProps = CommonDialogProps & {
+    onBackButtonClick: () => void;
+    onActivateButtonClick: () => void;
+}
+
+
 export const TwoFactorAuthenticationSection = () => {
     const [twoFaActive, setTwoFaActive] = useState(false);
     const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
@@ -19,163 +40,40 @@ export const TwoFactorAuthenticationSection = () => {
 
     return (
         <>
-            <Dialog
-                onClose={() => setConfirmationDialogOpen(false)}
-                aria-labelledby="customized-dialog-title"
-                open={confirmationDialogOpen}
-            >
-                <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                    {twoFaActive ?  "Deaktivace" : "Aktivace"} dvoufaktorové ověření
-                </DialogTitle>
-                <IconButton
-                    aria-label="close"
-                    onClick={() => setConfirmationDialogOpen(false)}
-                    sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
-                        color: (theme) => theme.palette.grey[500],
-                    }}
-                >
-                    <CloseIcon />
-                </IconButton>
-                <DialogContent dividers>
-                    { twoFaActive &&
-                        <>
-                            <Typography gutterBottom>
-                                Opravdu si přejete zrušit dvoufaktorové ověření? Váš účet bude jednodušeji napadnutelný.
-                            </Typography>
-                            <Typography gutterBottom marginTop={2}>
-                                Dvoufázové ověření si můžete kdykoliv vrátit zpět stejným postupem, jako minule.
-                            </Typography>
-                        </>}
-                    { !twoFaActive &&
-                        <>
-                            <Typography gutterBottom>
-                                Právě se chystáte zaktivovat dvoufaktorové ověření vašeho účtu. Tím váš účet bude více v bezpečí.
-                                Aktivace trvá zhruba minutu a je velmi jednoduchá. K aktivaci budete potřebovat pouze mobilní telefon.
-                            </Typography>
-                            <Typography gutterBottom marginTop={2}>
-                                Veškerý postup naleznete v dalším kroku.
-                            </Typography>
-                        </>
-                    }
-                </DialogContent>
-                <DialogActions>
-                    {!twoFaActive && <Button onClick={() => {
-                        setConfirmationDialogOpen(false);
-                        setSetupDialogOpen(true);
-                    }} color='secondary'>
-                        Pokračovat k aktivaci
-                    </Button>}
+            <ConfirmationDialog twoFaActive={twoFaActive}
+                                open={confirmationDialogOpen}
+                                onClose={() => setConfirmationDialogOpen(false)}
+                                onCancelButtonClick={() => {
+                                    setTwoFaActive(false);
+                                    setSuccessAlert("Deaktivace 2FA proběhla úspěšně.");
+                                    setConfirmationDialogOpen(false);
+                                }}
+                                onContinueToActivationButtonClick={() => {
+                                    setConfirmationDialogOpen(false);
+                                    setSetupDialogOpen(true);
+                                }}/>
 
-                    {twoFaActive && <Button onClick={() => {
-                        setTwoFaActive(false);
-                        setSuccessAlert("Deaktivace 2FA proběhla úspěšně.");
+            <SetupDialog twoFaActive={twoFaActive}
+                         open={setupDialogOpen}
+                         onClose={() => setSetupDialogOpen(false)}
+                         onContinueToCheckButtonClick={() => {
+                             setSetupDialogOpen(false);
+                             setCheckDialogOpen(true);
+                         }}/>
 
-                        setConfirmationDialogOpen(false);
-                    }} color={'error'}>
-                        Zrušit
-                    </Button>}
-                </DialogActions>
-            </Dialog>
+            <CheckDialog twoFaActive={twoFaActive}
+                         open={checkDialogOpen}
+                         onClose={() => setCheckDialogOpen(false)}
+                         onBackButtonClick={() => {
+                             setCheckDialogOpen(false);
+                             setSetupDialogOpen(true);
+                         }}
+                         onActivateButtonClick={() => {
+                             setTwoFaActive(true);
+                             setSuccessAlert("Aktivace 2FA proběhla úspěšně.");
 
-            <Dialog
-                onClose={() => setSetupDialogOpen(false)}
-                aria-labelledby="customized-dialog-title"
-                open={setupDialogOpen}
-            >
-                <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                    Aktivace dvoufaktorové ověření
-                </DialogTitle>
-                <IconButton
-                    aria-label="close"
-                    onClick={() => setSetupDialogOpen(false)}
-                    sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
-                        color: (theme) => theme.palette.grey[500],
-                    }}
-                >
-                    <CloseIcon />
-                </IconButton>
-                <DialogContent dividers>
-                    <Typography gutterBottom marginTop={1}>
-                        <b>Krok 1:</b> Pro dvoufaktorové ověření používáme službu Google Authenticator. Abyste správně napojili svůj účet, prosím, stáhněte si do svého mobilního telefonu
-                        aplikaci Google Authenticator pomocí jednoho z těchto odkazů
-                    </Typography>
-                    <Typography gutterBottom marginTop={3}>
-                        <b>Krok 2:</b> V dolní pravé části obrazovky klikněte na tlačítko s ikonou <b>+</b> a zvolte možnost načíst QR kód. Kamerou načtěte následující QR kód
-                    </Typography>
-                    <img src={qrcode} width={250}/>
-                    <Typography gutterBottom marginTop={3}>
-                        <b>Krok 3:</b> Na hlavní stránce v aplikaci by se měl zobrazit jednorázový, časově omezený kód pod názvem naší aplikace "TimeTracker". Pokud kód vidíte,
-                        pokračujte na ověření.
-                    </Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => {
-                        setSetupDialogOpen(false);
-                        setCheckDialogOpen(true);
-                    }} color='secondary'>
-                        Pokračovat k ověření
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-            <Dialog
-                onClose={() => setCheckDialogOpen(false)}
-                aria-labelledby="customized-dialog-title"
-                open={checkDialogOpen}
-            >
-                <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                    Ověření dvoufaktorové ověření
-                </DialogTitle>
-                <IconButton
-                    aria-label="close"
-                    onClick={() => setCheckDialogOpen(false)}
-                    sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
-                        color: (theme) => theme.palette.grey[500],
-                    }}
-                >
-                    <CloseIcon />
-                </IconButton>
-                <DialogContent dividers>
-                    <Typography gutterBottom mt={1}>
-                        Prosím, zadejte svůj jednorázový autorizační kód z aplikace k dokončení celého procesu.
-                    </Typography>
-                    <TextField
-                        autoFocus
-                        required
-                        margin="dense"
-                        label="Jednorázový kód"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        sx={{mb: 3}}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => {
-                        setCheckDialogOpen(false);
-                        setSetupDialogOpen(true);
-                    }} color='primary'>
-                        Zpět
-                    </Button>
-                    <Button onClick={() => {
-                        setTwoFaActive(true);
-                        setSuccessAlert("Aktivace 2FA proběhla úspěšně.");
-
-                        setCheckDialogOpen(false);
-                    }} color='secondary'>
-                        Aktivovat
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                             setCheckDialogOpen(false);
+                         }}/>
 
             <Box width={'100%'}>
                 <Stack direction={'row'}>
@@ -186,8 +84,11 @@ export const TwoFactorAuthenticationSection = () => {
                     <Stack direction={'row'} paddingLeft={2}>
                         <img src={"../circle.svg"} alt={""} width={15} height={15} className={dotClass}
                              style={{marginTop: '8px'}}/>
+
                         <Typography paddingTop={'5px'}
-                                    paddingLeft={'5px'}>{twoFaActive ? 'Aktivní' : 'Neaktivní'}</Typography>
+                                    paddingLeft={'5px'}>
+                            {twoFaActive ? 'Aktivní' : 'Neaktivní'}
+                        </Typography>
                     </Stack>
                 </Stack>
                 <Typography>
@@ -197,10 +98,12 @@ export const TwoFactorAuthenticationSection = () => {
                 </Typography>
                 <br/>
                 <Typography style={{fontWeight: 'bold'}}>
-                    {twoFaActive ? "Dvoufaktorové ověření již máte aktivní. Děkujeme, že si chráníte účet." :
-                        "V tuto chvíli nemáte aktivní dvoufaktorové ověření. Doporučujeme si ho zaktivovat tlačítkem níže."}
+                    {twoFaActive ?
+                        "Dvoufaktorové ověření již máte aktivní. Děkujeme, že si chráníte účet." :
+                        "V tuto chvíli nemáte aktivní dvoufaktorové ověření. Doporučujeme si ho zaktivovat tlačítkem níže."
+                    }
                 </Typography>
-                <br />
+                <br/>
                 <Button
                     type="submit"
                     fullWidth
@@ -215,3 +118,163 @@ export const TwoFactorAuthenticationSection = () => {
         </>
     );
 };
+
+const ConfirmationDialog = ({open, twoFaActive, onClose, onCancelButtonClick, onContinueToActivationButtonClick}: ConfirmationDialogProps) => {
+    return (
+        <Dialog
+            onClose={onClose}
+            open={open}
+        >
+            <DialogTitle sx={{m: 0, p: 2}}>
+                {twoFaActive ? "Deaktivace" : "Aktivace"} dvoufaktorové ověření
+            </DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onClose}
+                sx={{
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: (theme) => theme.palette.grey[500],
+                }}
+            >
+                <CloseIcon/>
+            </IconButton>
+            <DialogContent dividers>
+                {twoFaActive &&
+                    <>
+                        <Typography gutterBottom>
+                            Opravdu si přejete zrušit dvoufaktorové ověření? Váš účet bude jednodušeji napadnutelný.
+                        </Typography>
+                        <Typography gutterBottom marginTop={2}>
+                            Dvoufázové ověření si můžete kdykoliv vrátit zpět stejným postupem, jako minule.
+                        </Typography>
+                    </>
+                }
+
+                {!twoFaActive &&
+                    <>
+                        <Typography gutterBottom>
+                            Právě se chystáte zaktivovat dvoufaktorové ověření vašeho účtu. Tím váš účet bude více v
+                            bezpečí.
+                            Aktivace trvá zhruba minutu a je velmi jednoduchá. K aktivaci budete potřebovat pouze
+                            mobilní
+                            telefon.
+                        </Typography>
+                        <Typography gutterBottom marginTop={2}>
+                            Veškerý postup naleznete v dalším kroku.
+                        </Typography>
+                    </>
+                }
+            </DialogContent>
+            <DialogActions>
+                {twoFaActive &&
+                    <Button onClick={onCancelButtonClick} color={'error'}>
+                        Zrušit
+                    </Button>
+                }
+
+                {!twoFaActive &&
+                    <Button onClick={onContinueToActivationButtonClick} color='secondary'>
+                        Pokračovat k aktivaci
+                    </Button>
+                }
+            </DialogActions>
+        </Dialog>
+    );
+}
+
+const SetupDialog = ({open, twoFaActive, onClose, onContinueToCheckButtonClick}: SetupDialogProps) => {
+    return (
+        <Dialog
+            onClose={onClose}
+            open={open}
+        >
+            <DialogTitle sx={{m: 0, p: 2}}>
+                {twoFaActive ? "Deaktivace" : "Aktivace"} dvoufaktorové ověření
+            </DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onClose}
+                sx={{
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: (theme) => theme.palette.grey[500],
+                }}
+            >
+                <CloseIcon/>
+            </IconButton>
+            <DialogContent dividers>
+                <Typography gutterBottom marginTop={1}>
+                    <b>Krok 1:</b> Pro dvoufaktorové ověření používáme službu Google Authenticator. Abyste správně
+                    napojili svůj účet, prosím, stáhněte si do svého mobilního telefonu
+                    aplikaci Google Authenticator pomocí jednoho z těchto odkazů
+                </Typography>
+                <Typography gutterBottom marginTop={3}>
+                    <b>Krok 2:</b> V dolní pravé části obrazovky klikněte na tlačítko s ikonou <b>+</b> a zvolte možnost
+                    načíst QR kód. Kamerou načtěte následující QR kód
+                </Typography>
+                <img src={qrcode} width={250}/>
+                <Typography gutterBottom marginTop={3}>
+                    <b>Krok 3:</b> Na hlavní stránce v aplikaci by se měl zobrazit jednorázový, časově omezený kód pod
+                    názvem naší aplikace "TimeTracker". Pokud kód vidíte,
+                    pokračujte na ověření.
+                </Typography>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onContinueToCheckButtonClick} color='secondary'>
+                    Pokračovat k ověření
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
+}
+
+const CheckDialog = ({open, twoFaActive, onClose, onBackButtonClick, onActivateButtonClick}: CheckDialogProps) => {
+    return (
+        <Dialog
+            onClose={onClose}
+            open={open}
+        >
+            <DialogTitle sx={{m: 0, p: 2}}>
+                {twoFaActive ? "Deaktivace" : "Aktivace"} dvoufaktorové ověření
+            </DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onClose}
+                sx={{
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: (theme) => theme.palette.grey[500],
+                }}
+            >
+                <CloseIcon/>
+            </IconButton>
+            <DialogContent dividers>
+                <Typography gutterBottom mt={1}>
+                    Prosím, zadejte svůj jednorázový autorizační kód z aplikace k dokončení celého procesu.
+                </Typography>
+                <TextField
+                    autoFocus
+                    required
+                    margin="dense"
+                    label="Jednorázový kód"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    sx={{mb: 3}}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onBackButtonClick} color='primary'>
+                    Zpět
+                </Button>
+                <Button onClick={onActivateButtonClick} color='secondary'>
+                    Aktivovat
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
+}

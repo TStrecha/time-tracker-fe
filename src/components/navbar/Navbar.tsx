@@ -2,7 +2,7 @@ import * as React from 'react';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Toolbar from '@mui/material/Toolbar';
-import {Alert} from "@mui/material";
+import {Alert, Box} from "@mui/material";
 import LogoutIcon from '@mui/icons-material/Logout';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import {useNavigate} from "react-router-dom";
@@ -31,7 +31,7 @@ export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
     const navigate = useNavigate();
 
     return (
-        <div id={"navbar"}>
+        <Box id={"navbar"}>
             <ChangeContextDialog open={isContextOpen}
                                  handleClose={value => {
                                      if (user?.loggedAs.id !== value) {
@@ -43,7 +43,7 @@ export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
 
             {
                 user.role === 'ADMIN' &&
-                <Alert severity="warning">
+                <Alert severity="warning" sx={{borderRadius: 0}}>
                     Používáte administrátorský účet.
                 </Alert>
             }
@@ -51,7 +51,7 @@ export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
             <Toolbar/>
             <UserNavbarProfile user={user}/>
 
-            <CenteredStack sx={{ marginBottom: 3 }}>
+            <CenteredStack sx={{marginBottom: 3}}>
 
                 <ToolTippedIconButton tooltipTitle={"Změnit kontext"} Icon={ContactPageIcon} onClick={() => {
                     if (!isContextOpen) {
@@ -67,15 +67,17 @@ export default function Navbar({ user }: Readonly<{ user: UserContext }>) {
 
             <Divider sx={{borderColor: grey[800]}}/>
 
-            <List sx={{ marginTop: 2 }}>
-                <NavbarItem Icon={DashboardIcon} path={"/dashboard"}>Přehled</NavbarItem>
-                <NavbarItem Icon={AssignmentIcon} path={"/"}>Úkoly</NavbarItem>
-                <NavbarItem Icon={AssessmentIcon} path={"/"}>Reporty</NavbarItem>
-                <NavbarItem Icon={ReceiptIcon} path={"/"}>Fakturace</NavbarItem>
-                <NavbarItem Icon={SettingsIcon} path={"/settings/details"}>Nastavení</NavbarItem>
+            <List sx={{marginTop: 2}}>
+                <NavbarItem Icon={DashboardIcon} path={"/dashboard"}
+                            isActive={location => location.pathname.startsWith("/dashboard")}>Přehled</NavbarItem>
+                <NavbarItem Icon={AssignmentIcon} path={"/"} isActive={() => false}>Úkoly</NavbarItem>
+                <NavbarItem Icon={AssessmentIcon} path={"/"} isActive={() => false}>Reporty</NavbarItem>
+                <NavbarItem Icon={ReceiptIcon} path={"/"} isActive={() => false}>Fakturace</NavbarItem>
+                <NavbarItem Icon={SettingsIcon} path={"/settings/details"}
+                            isActive={location => location.pathname.startsWith("/settings")}>Nastavení</NavbarItem>
             </List>
 
             <NavbarFooter/>
-        </div>
-    );
+        </Box>
+    )
 }

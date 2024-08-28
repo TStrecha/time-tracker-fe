@@ -36,7 +36,7 @@ const schema = z
     agreement: z.literal<boolean>(true, {
       errorMap: () => ({
         message:
-          "Pro registraci musíte souhlasit se zpracováním osobních údajů.",
+          "Pro pokračování musíte souhlasit se zpracováním osobních údajů.",
       }),
     }),
   })
@@ -64,7 +64,7 @@ const schema = z
     }
   });
 
-type ExpenseFormData = z.infer<typeof schema>;
+type RegisterFormData = z.infer<typeof schema>;
 
 const RegisterPage = () => {
   const [type, setType] = useState<"PERSON" | "COMPANY">("PERSON");
@@ -74,7 +74,7 @@ const RegisterPage = () => {
     register: zodRegister,
     handleSubmit,
     formState: { errors },
-  } = useForm<ExpenseFormData>({
+  } = useForm<RegisterFormData>({
     resolver: zodResolver(schema),
   });
 
